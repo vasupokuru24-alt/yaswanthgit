@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registration & Login</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+    .form-container {
+      max-width: 400px;
+      margin: auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+      margin-bottom: 20px;
+    }
+    h2 {
+      text-align: center;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #aaa;
+    }
+    .hidden {
+      display: none;
+    }
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-top: -8px;
+      margin-bottom: 8px;
+    }
+    .toggle-btn {
+      background: none;
+      color: #00ffcccf;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 0;
+      margin-top: -10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container" id="registrationFormContainer">
+    <h2>Register</h2>
+    <form id="registrationForm">
+      <input type="text" id="fullName" placeholder="Full Name" />
+      <p class="error" id="nameError"></p>
+
+      <input type="text" id="username" placeholder="Username" />
+      <p class="error" id="usernameError"></p>
+
+      <input type="email" id="email" placeholder="Email" />
+      <p class="error" id="emailError"></p>
+
+      <input type="password" id="password" placeholder="Password" />
+      <p class="error" id="passwordError"></p>
+
+      <input type="password" id="confirmPassword" placeholder="Confirm Password" />
+      <p class="error" id="confirmPasswordError"></p>
+
+      <button type="button" class="toggle-btn" onclick="togglePasswords()">Show Password</button>
+
+      <input type="date" id="dob" />
+      <select id="gender">
+        <option value="">Select Gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+
+      <input type="text" id="phone" placeholder="Phone Number" />
+      <textarea id="address" placeholder="Address"></textarea>
+      <input type="text" id="country" placeholder="Country" />
+
+      <input type="submit" value="Register" />
+    </form>
+  </div>
+
+  <div class="form-container hidden" id="loginFormContainer">
+    <h2>Login</h2>
+    <form id="loginForm">
+      <input type="text" id="loginUsername" placeholder="Username" required />
+      <input type="password" id="loginPassword" placeholder="Password" required />
+      <input type="submit" value="Login" />
+    </form>
+  </div>
+
+  <script>
+    const registrationForm = document.getElementById("registrationForm");
+    const loginForm = document.getElementById("loginForm");
+    const registrationFormContainer = document.getElementById("registrationFormContainer");
+    const loginFormContainer = document.getElementById("loginFormContainer");
+
+    function togglePasswords() {
+      const pw = document.getElementById("password");
+      const cpw = document.getElementById("confirmPassword");
+      const type = pw.type === "password" ? "text" : "password";
+      pw.type = cpw.type = type;
+    }
+
+    registrationForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const fullName = document.getElementById("fullName");
+      const username = document.getElementById("username");
+      const email = document.getElementById("email");
+      const password = document.getElementById("password");
+      const confirmPassword = document.getElementById("confirmPassword");
+      const dob = document.getElementById("dob");
+      const gender = document.getElementById("gender");
+      const phone = document.getElementById("phone");
+      const address = document.getElementById("address");
+      const country = document.getElementById("country");
+
+      const nameError = document.getElementById("nameError");
+      const usernameError = document.getElementById("usernameError");
+      const emailError = document.getElementById("emailError");
+      const passwordError = document.getElementById("passwordError");
+      const confirmPasswordError = document.getElementById("confirmPasswordError");
+
+      // Reset errors
+      nameError.textContent = usernameError.textContent = emailError.textContent =
+        passwordError.textContent = confirmPasswordError.textContent = "";
+
+      let isValid = true;
+
+      if (fullName.value.trim().length < 3) {
+        nameError.textContent = "Name must be at least 3 characters.";
+        isValid = false;
+      }
+
+      if (username.value.trim().length < 3) {
+        usernameError.textContent = "Username must be at least 3 characters.";
+        isValid = false;
+      }
+
+      const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+      if (!emailRegex.test(email.value.trim())) {
+        emailError.textContent = "Invalid email format.";
+        isValid = false;
+      }
+
+      if (password.value.length < 6) {
+        passwordError.textContent = "Password must be at least 6 characters.";
+        isValid = false;
+      }
+
+      if (password.value !== confirmPassword.value) {
+        confirmPasswordError.textContent = "Passwords do not match.";
+        isValid = false;
+      }
+
+      if (isValid) {
+        // Save data
+        const userDetails = {
+          name: fullName.value.trim(),
+          username: username.value.trim(),
+          email: email.value.trim(),
+          dob: dob.value,
+          gender: gender.value,
+          phone: phone.value.trim(),
+          address: address.value.trim(),
+          country: country.value.trim(),
+          password: password.value // used only for login check
+        };
+
+        localStorage.setItem("registeredUser", JSON.stringify(userDetails));
+
+        // Show details in new window
+        const win = window.open("", "_blank", "width=500,height=600");
+        win.document.write(`
+          <html><head><title>User Details</title>
+            <style>
+              body { font-family: Arial; padding: 20px; }
+              p { font-size: 16px; line-height: 1.5; }
+            </style>
+          </head><body>
+            <h2>Registration Successful</h2>
+            <p><strong>Full Name:</strong> ${userDetails.name}</p>
+            <p><strong>Username:</strong> ${userDetails.username}</p>
+            <p><strong>Email:</strong> ${userDetails.email}</p>
+            <p><strong>DOB:</strong> ${userDetails.dob}</p>
+            <p><strong>Gender:</strong> ${userDetails.gender}</p>
+            <p><strong>Phone:</strong> ${userDetails.phone}</p>
+            <p><strong>Address:</strong> ${userDetails.address}</p>
+            <p><strong>Country:</strong> ${userDetails.country}</p>
+          </body></html>
+        `);
+        win.document.close();
+
+        // Move to login
+        registrationForm.reset();
+        registrationFormContainer.classList.add("hidden");
+        loginFormContainer.classList.remove("hidden");
+      }
+    });
+
+    loginForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const loginUsername = document.getElementById("loginUsername").value.trim();
+      const loginPassword = document.getElementById("loginPassword").value;
+
+      const storedUser = JSON.parse(localStorage.getItem("registeredUser"));
+
+      if (storedUser && storedUser.username === loginUsername && storedUser.password === loginPassword) {
+        alert("Login successful!");
+        loginFormContainer.innerHTML = `
+          <h2>Welcome, ${storedUser.name}</h2>
+          <p>Email: ${storedUser.email}</p>
+          <p>DOB: ${storedUser.dob}</p>
+          <p>Gender: ${storedUser.gender}</p>
+          <p>Phone: ${storedUser.phone}</p>
+          <p>Address: ${storedUser.address}</p>
+          <p>Country: ${storedUser.country}</p>
+        `;
+      } else {
+        alert("Invalid username or password.");
+      }
+    });
+  </script>
+</body>
+</html>
