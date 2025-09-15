@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nature Aesthetic Webpage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Full page background image */
+    body, html {
+      height: 100%;
+      font-family: 'Montserrat', sans-serif;
+      color: #e6f2e6;
+      overflow-x: hidden;
+    }
+
+    body {
+      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
+    }
+
+    /* Overlay for darkening the background */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 50, 0, 0.5);
+      z-index: 0;
+    }
+
+    /* Main container - center content */
+    .container {
+      position: relative;
+      z-index: 1;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0 1rem;
+      text-align: center;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+    }
+
+    p {
+      font-size: 1.3rem;
+      max-width: 600px;
+      margin-bottom: 2.5rem;
+      line-height: 1.6;
+      color: #d4e7d4;
+    }
+
+    .btn-scroll {
+      background-color: #3a7d44cc;
+      border: none;
+      color: #e6f2e6;
+      padding: 0.9rem 2.5rem;
+      font-size: 1.1rem;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 6px 12px rgba(255, 255, 255, 0.6);
+    }
+
+    .btn-scroll:hover {
+      background-color: #4caf50dd;
+      transform: scale(1.05);
+      box-shadow: 0 8px 15px rgba(255, 255, 255, 0.8);
+    }
+
+    /* Content section below fold */
+    #content-section {
+      background: rgba(255, 255, 255, 0.9);
+      color: #ff0000;
+      padding: 4rem 1rem;
+      max-width: 900px;
+      margin: 0 auto 5rem;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      font-weight: 500;
+      line-height: 1.6;
+    }
+
+    #content-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      color: #00ff6e;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+      p {
+        font-size: 1rem;
+      }
+      .btn-scroll {
+        font-size: 1rem;
+        padding: 0.7rem 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Welcome</h1>
+    <p>Feel the calmness of the green forests and the gentle whisper of the wind. Let nature heal and inspire your soul.</p>
+    <button class="btn-scroll" id="scrollBtn">Explore More</button>
+  </div>
+
+  <section id="content-section">
+    <h2>Discover Nature’s Beauty</h2>
+    <p>
+      From towering trees to delicate flowers, the natural world offers endless inspiration and tranquility. Take time to wander, breathe deeply, and connect with the earth beneath your feet.
+    </p>
+    <p>
+      Nature is not only beautiful but essential for our wellbeing. Embrace its colors, sounds, and scents to find peace in a busy world.
+    </p>
+  </section>
+
+  <!-- jQuery CDN -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#scrollBtn').click(function() {
+        $('html, body').animate({
+          scrollTop: $('#content-section').offset().top
+        }, 900);
+      });
+    });
+  </script>
+
+</body>
+</html>
